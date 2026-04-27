@@ -6,7 +6,13 @@ list-unread-gmail が保存したキャッシュ /tmp/gmail_unread_list.json を
 import json
 import sys
 from pathlib import Path
-from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
+try:
+    from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
+except ImportError:
+    print(json.dumps({
+        "error": "playwright module not found. Install with: pip3 install playwright && playwright install chromium"
+    }, ensure_ascii=False))
+    sys.exit(1)
 
 CDP_URL = "http://127.0.0.1:9222"
 CACHE_FILE = "/tmp/gmail_unread_list.json"
